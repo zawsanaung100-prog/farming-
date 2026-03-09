@@ -34,6 +34,23 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(SwingPickaxe());
         }
 
+        // SAVE GAME
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            SaveManager.instance.SaveGame(transform);
+        }
+
+        // LOAD GAME
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            SaveData data = SaveManager.instance.LoadGame();
+
+            if (data != null)
+            {
+                transform.position = new Vector3(data.playerX, data.playerY, transform.position.z);
+            }
+        }
+
         Animate();
     }
 
@@ -71,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
         {
             moving = false;
 
-            // Force player to face front
             anim.SetFloat("X", 0);
             anim.SetFloat("Y", -1);
 
@@ -101,7 +117,6 @@ public class PlayerMovement : MonoBehaviour
     {
         isSwinging = true;
 
-        // Force front idle immediately
         anim.SetFloat("X", 0);
         anim.SetFloat("Y", -1);
         anim.SetBool("Moving", false);
